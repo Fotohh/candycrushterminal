@@ -57,11 +57,11 @@ public class CandyCrush {
                 swapNumbers(x1, y1, x1, y1 + 1);
                 return true;
             case "left":
-                if(x1 + 1 > array[y1].length - 1) return false;
+                if(x1 - 1 < 0) return false;
                 swapNumbers(x1, y1, x1 - 1, y1);
                 return true;
             case "right":
-                if(x1 - 1 < 0) return false;
+                if(x1 + 1 > array[y1].length - 1) return false;
                 swapNumbers(x1, y1, x1 + 1, y1);
                 return true;
         }
@@ -103,8 +103,10 @@ public class CandyCrush {
             }
         }
     }
-    
+    //cant understand this? too bad, I can't either
     public void crush(){
+        boolean[][] crushed = new boolean[array.length][array[0].length];
+
         for(int i = 0; i < array.length; i++) {
             int currentType = 0;
             int count = 0;
@@ -112,13 +114,13 @@ public class CandyCrush {
                 if(array[i][j] == currentType) count++;
                 if(array[i][j] != currentType || j == array[i].length - 1) {
                     int x = (j - 1) - count;
-                    if(j == array.length - 1 && array[i][j] == currentType) {
+                    if(j == array[i].length - 1 && array[i][j] == currentType) {
                         x = j - count;
                     }
                     if(count >= 2) {
                         if(x < 0) x = 0;
                         for(int a = 0; a < count + 1; a++) {
-                            array[i][x] = 0;
+                            crushed[i][x] = true;
                             x++;
                         }
                     }
@@ -134,7 +136,6 @@ public class CandyCrush {
             int currentType = 0;
             int count = 0;
             for(int y = 0; y < array.length; y++) {
-                if(array[y][x] == 0) continue;
                 if(array[y][x] == currentType) count++;
                 if(array[y][x] != currentType || y == array.length - 1) {
                     int b = (y - 1) - count;
@@ -144,13 +145,25 @@ public class CandyCrush {
                     if(count >= 2) {
                         if(b < 0) b = 0;
                         for(int a = 0; a < count + 1; a++) {
-                            array[b][x] = 0;
+                            crushed[b][x] = true;
                             b++;
                         }
                     }
                     currentType = array[y][x];
                     count = 0;
-                }}}}
+                }
+                if(array[y][x] == 0) {
+                    count = 0;
+                    currentType = 0;
+                    continue;
+                }}}
+
+        for(int i = 0; i < array.length; i++) {
+            for(int j = 0; j < array[i].length; j++) {
+                if(crushed[i][j]) array[i][j] = 0;
+            }
+        }
+    }
 
     public int getScore() {
         return score;
@@ -165,8 +178,8 @@ public class CandyCrush {
     }
 
     public boolean validateCoords(int row, int col) {
-        if(row > array.length || row < 0) return false;
-        if(col > array[row].length || col < 0) return false;
+        if(row >= array[0].length || row < 0) return false;
+        if(col >= array.length || col < 0) return false;
         return true;
     }
 }
