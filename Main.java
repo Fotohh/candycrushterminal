@@ -20,8 +20,19 @@ public class Main {
             while(true){
             
                 System.out.println("Enter in x coordinate: ");
+                if(!sc.hasNextInt()) {
+                    System.out.println("You entered in invalid coordinates!");
+                    sc.nextLine();
+                    continue;
+                }
                 row = sc.nextInt();
+
                 System.out.println("Enter in y coordinate: ");
+                if(!sc.hasNextInt()) {
+                    System.out.println("You entered in invalid coordinates!");
+                    sc.nextLine();
+                    continue;
+                }
                 col = sc.nextInt();
                 
                 if(!candyCrush.validateCoords(row, col)) {
@@ -52,7 +63,12 @@ public class Main {
             candyCrush.printBoard();
             System.out.println("\nPress enter to see swap");
             sc.nextLine();
-            candyCrush.swap(row, col, direction);
+
+            if(!candyCrush.swap(row, col, direction)) {
+                System.out.println("You can't swap in that direction!");
+                continue;
+            }
+
             candyCrush.printBoard();
             System.out.println("\nPress enter to see crush");
             sc.nextLine();
@@ -66,6 +82,8 @@ public class Main {
             sc.nextLine();
             candyCrush.fill();
         }
+
+        sc.close();
     }
 
 }
